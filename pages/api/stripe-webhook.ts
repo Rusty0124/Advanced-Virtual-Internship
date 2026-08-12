@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import type Stripe from "stripe";
 import { stripe, PRICE_TO_TIER } from "../../lib/stripe";
-import { adminAuth, adminDb } from "../../lib/firebaseAdmin";
+import { adminDb, adminGetCustomClaims, adminSetCustomClaims } from "../../lib/firebaseAdmin";
 
 export const config = {
   api: { bodyParser: false },
@@ -17,8 +17,8 @@ function readRawBody(req: NextApiRequest): Promise<Buffer> {
 }
 
 async function setSubscriptionTier(uid: string, tier: "basic" | "premium" | "premium-plus") {
-  const existingClaims = (await adminAuth.getUser(uid)).customClaims ?? {};
-  await adminAuth.setCustomUserClaims(uid, { ...existingClaims, stripeRole: tier });
+  const existingClaims = await adminGetCustomClaims(uid);
+  await adminSetCustomClaims(uid, { ...existingClaims, stripeRole: tier });
   await adminDb.collection("users").doc(uid).set({ subscription: tier }, { merge: true });
 }
 
