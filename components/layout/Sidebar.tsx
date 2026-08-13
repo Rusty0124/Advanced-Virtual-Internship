@@ -10,12 +10,13 @@ import {
   FiHelpCircle,
   FiLogIn,
   FiLogOut,
+  FiX,
 } from "react-icons/fi";
 import { auth } from "../../lib/firebase";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { openModal } from "../../store/modalSlice";
 
-export default function Sidebar() {
+export default function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user);
@@ -31,7 +32,11 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${open ? "sidebar--open" : ""}`}>
+      <button className="sidebar__close--btn" aria-label="Close menu" onClick={onClose}>
+        <FiX />
+      </button>
+
       <Link href="/" className="sidebar__logo">
         <img src="/assets/logo.png" alt="Summarist" />
       </Link>

@@ -41,7 +41,7 @@
 .page__body { padding: 24px 32px 64px; }
 @media (max-width: 768px) {
   .topbar { padding: 0 16px; }
-  .page__body { padding: 16px 16px 96px; }
+  .page__body { padding: 16px 16px 64px; }
 }
 
 .btn {
@@ -161,18 +161,44 @@
 .sidebar__link-icon { display: flex; align-items: center; justify-content: center; margin-right: 8px; }
 .sidebar__link-icon svg { width: 24px; height: 24px; }
 
+.sidebar__toggle--btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: var(--brand-text);
+  margin-right: 16px;
+  cursor: pointer;
+}
+.sidebar__close--btn {
+  display: none;
+  position: absolute;
+  top: 16px; right: 16px;
+  font-size: 22px;
+  color: var(--brand-text);
+  cursor: pointer;
+  z-index: 1;
+}
+.sidebar__overlay {
+  position: fixed; inset: 0;
+  background: rgba(3, 43, 65, 0.6);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.sidebar__overlay--visible { opacity: 1; pointer-events: auto; }
+
 @media (max-width: 768px) {
+  .sidebar__toggle--btn { display: flex; }
+  .sidebar__close--btn { display: flex; }
   .sidebar {
-    top: auto; bottom: 0; left: 0; right: 0; height: 64px; width: 100%; min-width: 100%;
-    flex-direction: row; align-items: center; padding: 0 8px;
-    overflow-x: auto; overflow-y: hidden;
+    transform: translateX(-100%);
+    width: 260px;
+    max-width: 80%;
+    transition: transform 0.3s ease;
   }
-  .sidebar__logo { display: none; }
-  .sidebar__nav { flex-direction: row; margin-top: 0; flex-shrink: 0; }
-  .sidebar__nav--bottom { margin-top: 0; padding-bottom: 0; }
-  .sidebar__link { height: 64px; justify-content: center; padding: 0 10px; flex-shrink: 0; }
-  .sidebar__link-line { display: none; }
-  .sidebar__link span:last-child { display: none; }
+  .sidebar--open { transform: translateX(0); }
 }
 
 /* ---------- search ---------- */
@@ -322,7 +348,7 @@
   padding: 0 40px; z-index: 9998;
 }
 @media (max-width: 768px) {
-  .player-bar { left: 0; bottom: 64px; height: auto; padding: 16px 24px; flex-direction: column; gap: 12px; }
+  .player-bar { left: 0; bottom: 0; height: auto; padding: 16px 24px; flex-direction: column; gap: 12px; }
 }
 .player-bar__book { display: flex; align-items: center; gap: 12px; min-width: 180px; }
 .player-bar__book img { width: 48px; height: 48px; border-radius: 4px; object-fit: cover; }
